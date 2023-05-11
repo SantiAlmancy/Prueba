@@ -59,4 +59,4 @@ jobs:
           app-name: 'UPB-Certi-Test'
           slot-name: 'Production'
           publish-profile: ${{secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D40A2C408D8D4FC6A1447A74A9E7AEB1}}
-          package: ${{github.workspace}}/FinalPracticePublish/myapp
+          package: ${{github.workspace}}/FinalPracticePublish
