@@ -19,14 +19,14 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
 
+      - name: Restore NuGet packages
+        run: dotnet restore FinalPractice/FinalPractice.csproj
+
       - name: Build with dotnet
         run: dotnet build --configuration Release FinalPractice/FinalPractice.csproj
 
       - name: dotnet publish
         run: dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Copy CoreLogic file
-        run: cp CoreLogic/File.cs ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
