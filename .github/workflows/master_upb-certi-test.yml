@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'UPB-Certi-Test'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_29610D099BA24635AA7229362C6A3C83 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D40A2C408D8D4FC6A1447A74A9E7AEB1 }}
           package: .
