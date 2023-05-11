@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "pelota",
+    "Type": "SOCCER",
+    "Stock": 2,
+    "Code": "SOCCER-001",
+    "Price": 97.67
+  },
+  {
+    "Name": "guante",
+    "Type": "SOCCER",
+    "Stock": 4,
+    "Code": "SOCCER-002",
+    "Price": 47.33
+  },
+  {
+    "Name": "zapato",
+    "Type": "BASKET",
+    "Stock": 8,
+    "Code": "BASKET-001",
+    "Price": 65.03
+  }
+]
