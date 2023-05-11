@@ -29,7 +29,9 @@ jobs:
         run: dotnet build --configuration Release CoreLogic/CoreLogic.csproj
 
       - name: dotnet publish
-        run: dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{github.workspace}}/publish
+        run: |
+          dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{github.workspace}}/publish/FinalPractice
+          dotnet publish CoreLogic/CoreLogic.csproj --configuration Release --output ${{github.workspace}}/publish/CoreLogic
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
