@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy ASP.Net Core app to Azure Web App - UPB-Certi-Test
 
 on:
@@ -11,32 +14,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-          include-prerelease: true
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        include-prerelease: true
 
-      - name: Build with dotnet
-        run: |
-          dotnet build --configuration Release FinalPractice/FinalPractice.csproj
-          dotnet build --configuration Release CoreLogic/CoreLogic.csproj
+    - name: Build with dotnet
+      run: dotnet build FinalPractice/FinalPractice.csproj --configuration Release
 
-      - name: dotnet publish FinalPractice
-        run: dotnet publish --configuration Release --output ${{github.workspace}}/FinalPracticePublish FinalPractice/FinalPractice.csproj
+    - name: dotnet publish
+      run: dotnet publish FinalPractice/FinalPractice.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: dotnet publish CoreLogic
-        run: dotnet publish --configuration Release --output ${{github.workspace}}/CoreLogicPublish CoreLogic/CoreLogic.csproj
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: dotnet-app
-          path: |
-            ${{github.workspace}}/FinalPracticePublish
-            ${{github.workspace}}/CoreLogicPublish
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v2
+      with:
+        name: .net-app
+        path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: windows-latest
@@ -46,17 +42,17 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: dotnet-app
-          path: ${{github.workspace}}
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
+      with:
+        name: .net-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'UPB-Certi-Test'
-          slot-name: 'Production'
-          publish-profile: ${{secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D40A2C408D8D4FC6A1447A74A9E7AEB1}}
-          package: ${{github.workspace}}/FinalPracticePublish
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'UPB-Certi-Test'
+        slot-name: 'Production'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0409DE2A7705468C8450BE3B1F0ADBEC }}
+        package: ./myapp
+        arguments: '-webAppUri <your-app-url> -projectLocation FinalPractice -coreLogicLocation FinalPractice/CoreLogic'
