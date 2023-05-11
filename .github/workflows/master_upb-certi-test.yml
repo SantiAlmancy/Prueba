@@ -29,13 +29,13 @@ jobs:
         run: dotnet build --configuration Release CoreLogic/CoreLogic.csproj
 
       - name: dotnet publish
-        run: dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{github.workspace}}/FinalPractice/myapp
+        run: dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{github.workspace}}/publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: dotnet-app
-          path: ${{github.workspace}}/FinalPractice/myapp
+          path: ${{github.workspace}}/publish
 
   deploy:
     runs-on: windows-latest
@@ -58,4 +58,4 @@ jobs:
           app-name: 'UPB-Certi-Test'
           slot-name: 'Production'
           publish-profile: ${{secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D40A2C408D8D4FC6A1447A74A9E7AEB1}}
-          package: ${{github.workspace}}/FinalPractice/myapp
+          package: ${{github.workspace}}/publish
