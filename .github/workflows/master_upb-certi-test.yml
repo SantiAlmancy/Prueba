@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy ASP.Net Core app to Azure Web App - UPB-Certi-Test
 
 on:
@@ -19,11 +22,11 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
 
-      - name: Restore NuGet packages
-        run: dotnet restore FinalPractice/FinalPractice.csproj
-
       - name: Build with dotnet
         run: dotnet build --configuration Release FinalPractice/FinalPractice.csproj
+
+      - name: Build CoreLogic class library
+        run: dotnet build --configuration Release CoreLogic/CoreLogic.csproj
 
       - name: dotnet publish
         run: dotnet publish FinalPractice/FinalPractice.csproj --configuration Release --output ${{env.DOTNET_ROOT}}/myapp
@@ -31,7 +34,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-app
+          name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
@@ -45,7 +48,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: dotnet-app
+          name: .net-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -54,4 +57,4 @@ jobs:
           app-name: 'UPB-Certi-Test'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D40A2C408D8D4FC6A1447A74A9E7AEB1 }}
-          package: ${{ github.workspace }}/dotnet-app
+          package: myapp
